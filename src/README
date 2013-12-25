@@ -1,0 +1,5 @@
+options:
+(1)lableData 指定lableData文件路径;
+(2)trainData
+(3)removeLData 从trainData中移除lableData,默认false;
+(4)weakLearning 弱监督学习,默认false;
