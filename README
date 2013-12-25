@@ -3,3 +3,5 @@ options:
 (2)trainData
 (3)removeLData 从trainData中移除lableData,默认false;
 (4)weakLearning 弱监督学习,默认false;
+(5)wordLength 指定最小关键字长度,默认为2
+(6)wordCharacter 指定关键字词性,默认为所有

@@ -6,7 +6,8 @@ public class Options {
 	String outputPath = "output/";
 	boolean removeLData = false;
 	boolean weakLearning = false;
-	
+	int wordLength = 2;
+	String[] wordCharacter = null;
 	
 	public Options(String[] args){
 		String[] options = args;
@@ -28,6 +29,12 @@ public class Options {
 			if(parame[0].equals("weakLearning")){
 				if(parame[1].equals("true")) weakLearning = true;
 			}
+			if(parame[0].equals("wordLength")){
+				wordLength = Integer.valueOf(parame[1]);
+			}
+			if(parame[0].equals("wordCharacter")){
+				wordCharacter = parame[1].split(",");
+			}
 		}
 		
 		if(lableData == null || trainData == null){
@@ -44,7 +51,15 @@ public class Options {
 		sb.append("trainData=").append(trainData).append("|");
 		sb.append("outputPath=").append(outputPath).append("|");
 		sb.append("removeLData=").append(removeLData).append("|");
-		sb.append("weakLearning=").append(weakLearning);
+		sb.append("weakLearning=").append(weakLearning).append("|");
+		sb.append("wordLength=").append(wordLength).append("|");
+		if(wordCharacter !=null){
+			sb.append("wordCharacter=");
+			for(String s : wordCharacter){
+				sb.append(s).append(",");
+			}
+			sb.delete(sb.length()-1,sb.length());
+		}
 		sb.append("}");
 		return sb.toString();
 	}
