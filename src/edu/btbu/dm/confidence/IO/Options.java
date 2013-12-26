@@ -8,6 +8,7 @@ public class Options {
 	boolean weakLearning = false;
 	int wordLength = 2;
 	String[] wordCharacter = null;
+	String[] classes = null;
 	
 	public Options(String[] args){
 		String[] options = args;
@@ -35,6 +36,9 @@ public class Options {
 			if(parame[0].equals("wordCharacter")){
 				wordCharacter = parame[1].split(",");
 			}
+			if(parame[0].equals("classes")){
+				classes = parame[1].split(",");
+			}
 		}
 		
 		if(lableData == null || trainData == null){
@@ -59,6 +63,14 @@ public class Options {
 				sb.append(s).append(",");
 			}
 			sb.delete(sb.length()-1,sb.length());
+		}
+		sb.append("|");
+		if(classes != null){
+			sb.append("classes=");
+			for(String s : classes){
+				sb.append(s).append(",");
+			}
+			sb.delete(sb.length()-1, sb.length());
 		}
 		sb.append("}");
 		return sb.toString();
