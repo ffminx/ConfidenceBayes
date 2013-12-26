@@ -1,15 +1,15 @@
 package edu.btbu.dm.confidence.IO;
 
 public class Options {
-	String lableData;
-	String trainData;
-	String outputPath = "output/";
-	boolean removeLData = false;
-	boolean weakLearning = false;
-	int wordLength = 2;
-	String[] wordCharacter = null;
-	String[] classes = null;
-	
+	public String lableData;
+	public String trainData;
+	public String outputPath = "output/";
+	public boolean removeLData = false;
+	public boolean weakLearning = false;
+	public int wordLength = 2;
+	public String[] wordCharacter = null;
+	public String[] classes = null;
+
 	public Options(String[] args){
 		String[] options = args;
 		for(String option : options){
@@ -47,13 +47,6 @@ public class Options {
 		} 
 	}
 	
-	public String[] getClasses(){
-		return this.classes;
-	}
-	
-	public void setClasses(String[] classes){
-		this.classes = classes;
-	}
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("options:");

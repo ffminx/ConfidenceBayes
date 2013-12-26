@@ -1,7 +1,8 @@
 options:
 (1)lableData 指定lableData文件路径;
 (2)trainData
-(3)removeLData 从trainData中移除lableData,默认false;
+(3)removeLData 从trainData中移除lableData,默认false,目前暂未实现！！
 (4)weakLearning 弱监督学习,默认false;
 (5)wordLength 指定最小关键字长度,默认为2
 (6)wordCharacter 指定关键字词性,默认为所有
+(7)classes 指定类标签,若不指定会读取标记数据中的所有类标签，若指定的类标签与读取的类标签不一致,会退出程序！！ 此参数暂时不要用。
