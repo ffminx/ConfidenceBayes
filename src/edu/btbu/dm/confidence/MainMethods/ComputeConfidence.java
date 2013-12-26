@@ -9,6 +9,6 @@ public class ComputeConfidence {
 		Options opt = new Options(args);
 		System.out.println(opt.toString());
 		ReadDataFile read = new ReadDataFile(opt).readAllData();
-		
+		System.out.println();
 	}
 }

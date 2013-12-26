@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,15 +50,28 @@ public class ReadDataFile {
 			br.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Train Data not Exists...");
+			System.out.println("ERROR:Train Data not Exists...");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Read Data error...");
+			System.out.println("ERROR:Read Data error...");
 		} 
+		
+		if(opt.classes == null){
+			opt.setClasses(getClasses());
+		}else{
+			List<String> classes = Arrays.asList(getClasses());
+			List<String> specifyClasses = Arrays.asList(opt.getClasses());
+			for(String s : classes){
+				if(!specifyClasses.contains(s)){
+					System.out.println("ERROR:LableData中读取类别与指定类别不匹配...");
+					System.exit(0);
+				}
+			}
+		}
 		return this;
 	}
-
-	public String[] filter(String str){
+	
+	String[] filter(String str){
 		List<String> keywords = ParserUtil.parserResult(str);
 		Iterator<String> iterator = keywords.iterator();
 		while(iterator.hasNext()){
@@ -65,5 +79,13 @@ public class ReadDataFile {
 			if(word.length()<opt.wordLength) iterator.remove();
 		}
 		return keywords.toArray(new String[0]);
+	}
+
+	String[] getClasses(){
+		List<String> classes = new ArrayList<String>();
+		for(String s : tags){
+			if(!classes.contains(s)) classes.add(s);
+		}
+		return classes.toArray(new String[0]);
 	}
 }

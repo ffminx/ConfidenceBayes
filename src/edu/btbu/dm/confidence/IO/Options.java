@@ -47,6 +47,13 @@ public class Options {
 		} 
 	}
 	
+	public String[] getClasses(){
+		return this.classes;
+	}
+	
+	public void setClasses(String[] classes){
+		this.classes = classes;
+	}
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("options:");
