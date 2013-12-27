@@ -13,10 +13,13 @@ import edu.btbu.dm.confidence.IO.Options;
 public class ModelPresentation {
 	Options opt;
 	DataPreProcess dp;
-	HashMap<String,Integer> classFlag;
-	HashMap<String,Integer> wordFlag;
-	Matrix wordsCount; 
-	Matrix wordsFrequency;
+	String[] dataClass;
+	public HashMap<String,Integer> classFlag;
+	public HashMap<String,Integer> wordFlag;
+	public Matrix wordCount; 
+	public Matrix wordPriorPro;
+	public Matrix classCount;
+	public Matrix classPriorPro;
 	
 	
 	public ModelPresentation(Options opt,DataPreProcess dp){
@@ -27,15 +30,17 @@ public class ModelPresentation {
 		
 		_initFlag();
 		
-		wordsCount = new Matrix(wordFlag.size(),classFlag.size());
-		wordsFrequency = new Matrix(wordFlag.size(),classFlag.size());
-				
+		wordCount = new Matrix(wordFlag.size(),classFlag.size());
+		wordPriorPro = new Matrix(wordFlag.size(),classFlag.size());
+		
+		classCount = new Matrix(1,classFlag.size());
+		classPriorPro = new Matrix(1,classFlag.size());
 	}
 
 	void _initFlag() {
-		String[] dataClasses = generateClass(dp.tags);
+		dataClass = generateClass(dp.tags);
 		int m=0;
-		for(String s : dataClasses){
+		for(String s : dataClass){
 			classFlag.put(s, m++);
 		}
 		
@@ -56,21 +61,33 @@ public class ModelPresentation {
 		}
 	}
 	
-	public Matrix ComputeWordsCounts(){
+	public void _init(){
 		String[] tags = dp.tags;
 		List<String[]> wordsList = dp.lableDataWords;
+		List<String> temp = new ArrayList<String>();
 		for(int i=0;i<wordsList.size();i++){
+			temp.clear();
 			String[] words = wordsList.get(i);
 			String tag = tags[i];
 			for(String s : words){
+				if(temp.contains(s)) continue;
 				int row = wordFlag.get(s);
 				int column = classFlag.get(tag);
-				wordsCount.set(row, column, wordsCount.get(row, column)+1);
+				wordCount.set(row, column, wordCount.get(row, column)+1);
+				temp.add(s);
 			}
 		}
-		return wordsCount;
+		
+		for(String tag : tags){
+			int idx = classFlag.get(tag);
+			classCount.set(0, idx, classCount.get(0, idx)+1);
+		}
+		
+		int sampleCount = tags.length;
+		double base = (double)1/(double)sampleCount;
+		classPriorPro = classCount.times(base);
 	}
-
+	
 	String[] generateClass(String[] tags){
 		List<String> classes = new ArrayList<String>();
 		for(String tag : tags){

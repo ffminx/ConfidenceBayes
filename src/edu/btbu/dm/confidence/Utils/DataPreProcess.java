@@ -10,8 +10,8 @@ import edu.btbu.dm.confidence.IO.ReadDataFile;
 public class DataPreProcess {
 	Options opt;
 	ReadDataFile rin;
-	List<String[]> lableDataWords;
-	List<String[]> trainDataWords;
+	public List<String[]> lableDataWords;
+	public List<String[]> trainDataWords;
 	String[] tags;
 	
 	public DataPreProcess(Options opt, ReadDataFile rin){

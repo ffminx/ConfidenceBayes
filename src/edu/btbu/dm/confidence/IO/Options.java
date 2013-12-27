@@ -9,6 +9,7 @@ public class Options {
 	public int wordLength = 2;
 	public String[] wordCharacter = null;
 	public String[] classes = null;
+	public double alpha = 0.1;
 
 	public Options(String[] args){
 		String[] options = args;
@@ -38,6 +39,9 @@ public class Options {
 			}
 			if(parame[0].equals("classes")){
 				classes = parame[1].split(",");
+			}
+			if(parame[0].equals("alpha")){
+				alpha = Double.valueOf(parame[1]);
 			}
 		}
 		
@@ -72,6 +76,8 @@ public class Options {
 			}
 			sb.delete(sb.length()-1, sb.length());
 		}
+		sb.append("|");
+		sb.append("alpha=").append(alpha);
 		sb.append("}");
 		return sb.toString();
 	}

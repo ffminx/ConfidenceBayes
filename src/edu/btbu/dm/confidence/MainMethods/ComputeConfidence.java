@@ -1,8 +1,8 @@
 package edu.btbu.dm.confidence.MainMethods;
 
-import Jama.Matrix;
 import edu.btbu.dm.confidence.IO.Options;
 import edu.btbu.dm.confidence.IO.ReadDataFile;
+import edu.btbu.dm.confidence.Model.BayesModel;
 import edu.btbu.dm.confidence.Utils.DataPreProcess;
 import edu.btbu.dm.confidence.Utils.ModelPresentation;
 
@@ -12,8 +12,12 @@ public class ComputeConfidence {
 		Options opt = new Options(args);
 		System.out.println(opt.toString());
 		ReadDataFile rin = new ReadDataFile(opt).readAllData();
-		ModelPresentation model = new DataPreProcess(opt,rin).doProcess();
-		Matrix wordsCount = model.ComputeWordsCounts();
+		DataPreProcess dp = new DataPreProcess(opt,rin);
+		ModelPresentation modelPresen = dp.doProcess();
+		modelPresen._init();
+		
+		BayesModel bayes = new BayesModel(opt,dp,modelPresen);
+		bayes.ComputeWordPriorPro();
 		System.out.println();
 	}
 }
