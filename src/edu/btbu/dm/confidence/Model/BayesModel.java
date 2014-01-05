@@ -18,6 +18,7 @@ public class BayesModel {
 	Matrix wordPriorPro;
 	Matrix classCount;
 	Matrix classPriorPro;
+	String[] trainDataResult;
 	
 	public BayesModel(Options opt, DataPreProcess dp, ModelPresentation modelPre){
 		lableData = dp.lableDataWords;
@@ -41,5 +42,43 @@ public class BayesModel {
 			wordPriorPro.setMatrix(wordIdx, wordIdx, 0,classFlag.size()-1,result);
 			System.out.println();
 		}
+	}
+	
+	//预测某句子类别
+	//先预测句子中词的类别概率，然后求平均。
+	public String TrainSample(String[] words){
+		Matrix resultMatrix = new Matrix(1,classFlag.size());
+		double count = 0;
+		for(String word : words){
+			if(wordFlag.containsKey(word)){
+				Matrix PriorPro = wordPriorPro.getMatrix(wordFlag.get(word), wordFlag.get(word), 0, classFlag.size()-1);
+				resultMatrix.plusEquals(PriorPro.arrayTimes(classPriorPro));
+				
+				count++;
+			}
+		}
+		resultMatrix.times(1/count);
+		int i,j=0;
+		double d = 0;
+		for(i=0;i<resultMatrix.getColumnDimension();i++){
+			if(resultMatrix.get(0, i) > d){
+				d = resultMatrix.get(0, i);
+				j = i;
+			}
+		}
+		String result = null;
+		for(String key : classFlag.keySet()){
+			Integer value = classFlag.get(key);
+			if(value == j){
+				result = key;
+				break;
+			}
+		}
+		return result;
+	}
+	
+	//以预测的结果更新先验概率
+	public void WeakLearningUpdate(String[] words,String tag){
+		
 	}
 }
