@@ -1,5 +1,6 @@
 package edu.btbu.dm.confidence.Model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,7 +41,6 @@ public class BayesModel {
 			Matrix smoothMatrix = classPriorPro.times(alpha);
 			Matrix result = smoothMatrix.plus(classCount).arrayLeftDivide(smoothMatrix.plus(wordCountMatrix));
 			wordPriorPro.setMatrix(wordIdx, wordIdx, 0,classFlag.size()-1,result);
-			System.out.println();
 		}
 	}
 	
@@ -53,7 +53,6 @@ public class BayesModel {
 			if(wordFlag.containsKey(word)){
 				Matrix PriorPro = wordPriorPro.getMatrix(wordFlag.get(word), wordFlag.get(word), 0, classFlag.size()-1);
 				resultMatrix.plusEquals(PriorPro.arrayTimes(classPriorPro));
-				
 				count++;
 			}
 		}
@@ -79,6 +78,32 @@ public class BayesModel {
 	
 	//以预测的结果更新先验概率
 	public void WeakLearningUpdate(String[] words,String tag){
+		List<String> temp = new ArrayList<String>();
+		for(String word : words){
+			if(temp.contains(word)) continue;
+			if(wordFlag.containsKey(word)){
+				int row = wordFlag.get(word);
+				int column = classFlag.get(tag);
+				wordCount.set(row, column, wordCount.get(row, column)+1);
+				temp.add(word);
+			}
+		}
+
+		classCount.set(0, classFlag.get(tag), classCount.get(0, classFlag.get(tag))+1);
 		
+		int sum = 0;
+		for(int i=0;i<classCount.getColumnDimension();i++){
+			sum+=classCount.get(0, i);
+		}
+		
+		classPriorPro = classCount.times(Double.valueOf(1)/Double.valueOf(sum));
+		
+		for(String word : temp){
+			int wordIdx = wordFlag.get(word);
+			Matrix wordCountMatrix = wordCount.getMatrix(wordIdx, wordIdx,0,classFlag.size()-1);
+			Matrix smoothMatrix = classPriorPro.times(alpha);
+			Matrix result = smoothMatrix.plus(classCount).arrayLeftDivide(smoothMatrix.plus(wordCountMatrix));
+			wordPriorPro.setMatrix(wordIdx, wordIdx, 0,classFlag.size()-1,result);
+		}
 	}
 }
