@@ -2,9 +2,9 @@ package edu.btbu.dm.confidence.MainMethods;
 
 import java.util.List;
 
-import Jama.Matrix;
 import edu.btbu.dm.confidence.IO.Options;
 import edu.btbu.dm.confidence.IO.ReadDataFile;
+import edu.btbu.dm.confidence.IO.WriteDataFile;
 import edu.btbu.dm.confidence.Model.BayesModel;
 import edu.btbu.dm.confidence.Utils.DataPreProcess;
 import edu.btbu.dm.confidence.Utils.ModelPresentation;
@@ -20,6 +20,7 @@ public class ComputeConfidence {
 		modelPresen._init();
 		BayesModel bayes = new BayesModel(opt,dp,modelPresen);
 		bayes.ComputeWordPriorPro();
+		WriteDataFile write = new WriteDataFile(opt);
 		List<String[]> trainData = dp.trainDataWords;
 		String[] tags = new String[trainData.size()];
 		if(opt.weakLearning){
@@ -28,18 +29,15 @@ public class ComputeConfidence {
 				tags[i] = tag;
 				bayes.WeakLearningUpdate(trainData.get(i), tag);
 			}
+			write.WriteTrainOutput(rin.trainData, tags);
 		}else{
 			for(int i=0;i<dp.trainDataWords.size();i++){
 				String tag = bayes.TrainSample(trainData.get(i));
 				tags[i] = tag;
 			}
+			write.WriteTrainOutput(rin.trainData, tags);
 		}
-		for(int i=0;i<trainData.size();i++){
-			System.out.print(rin.trainData.get(i));
-			System.out.print("===>");
-			System.out.println(tags[i]);
-		}
-		System.out.println();
+		write.close();
 
 	}
 }
