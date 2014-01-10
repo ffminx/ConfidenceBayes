@@ -9,7 +9,7 @@ import edu.btbu.dm.confidence.Model.BayesModel;
 import edu.btbu.dm.confidence.Utils.DataPreProcess;
 import edu.btbu.dm.confidence.Utils.ModelPresentation;
 
-public class ComputeConfidence {
+public class NaveBayes {
 
 	public static void main(String[] args){
 		Options opt = new Options(args);
@@ -29,14 +29,13 @@ public class ComputeConfidence {
 				tags[i] = tag;
 				bayes.WeakLearningUpdate(trainData.get(i), tag);
 			}
-			write.WriteTrainOutput(rin.trainData, tags);
 		}else{
 			for(int i=0;i<dp.trainDataWords.size();i++){
 				String tag = bayes.TrainSample(trainData.get(i));
 				tags[i] = tag;
 			}
-			write.WriteTrainOutput(rin.trainData, tags);
 		}
+		write.WriteTrainOutput(rin.trainData, tags);
 		write.close();
 
 	}
