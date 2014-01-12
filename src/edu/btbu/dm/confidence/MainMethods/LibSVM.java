@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class LibSVM {
 	public static void main(String[] args){
-		File file = new File("E:\\毕业设计\\words.txt");
+		File file = new File("data/words.txt");
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String line;
@@ -20,7 +20,7 @@ public class LibSVM {
 				}
 			}
 			System.out.print(list.size());
-			
+			br.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

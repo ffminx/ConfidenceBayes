@@ -12,7 +12,7 @@ public class DataPreProcess {
 	ReadDataFile rin;
 	public List<String[]> lableDataWords;
 	public List<String[]> trainDataWords;
-	String[] tags;
+	public String[] tags;
 	
 	public DataPreProcess(Options opt, ReadDataFile rin){
 		this.opt = opt;
