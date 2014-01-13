@@ -3,9 +3,11 @@ package edu.btbu.dm.confidence.MainMethods;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,9 +28,9 @@ public class GenerateClassifyData {
 		
 		HashMap<String,Integer> wordFlag = modelPresen.wordFlag;
 		System.out.println(wordFlag.size());
-		int dim = 20;
+		int dim = 30;
 		Matrix wordVectorMatrix = new Matrix(wordFlag.size(),dim);
-		File wordVectorFile = new File("data/words_out_20.txt");
+		File wordVectorFile = new File("data/words_out_"+dim+".txt");
 		BufferedReader br = null;
 		
 		try {
@@ -49,7 +51,7 @@ public class GenerateClassifyData {
 		
 		List<String[]> lableData = dp.lableDataWords;
 		String[] tags = dp.tags;
-		BufferedWriter bw = new BufferedWriter(new FileWriter(new File("data/studySample.txt")));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("data/studySample_"+dim+".csv"),"GBK"));
 		StringBuilder sb = new StringBuilder();
 		for(int k=0;k<lableData.size();k++){
 			String[] sentence = lableData.get(k);
@@ -66,16 +68,22 @@ public class GenerateClassifyData {
 			vector.times(Double.valueOf(1)/Double.valueOf(count));
 			for(int i=0;i<vector.getColumnDimension();i++){
 				sb.append(vector.get(0, i));
-				sb.append(" ");
+				sb.append(",");
 			}
-			sb.append(tags[k]);
+			sb.delete(sb.length()-1, sb.length()-1);
+			if(tags[k].equals("0")) sb.append("very not sure");
+			if(tags[k].equals("0.2")) sb.append("not sure");
+			if(tags[k].equals("0.4")) sb.append("little not sure");
+			if(tags[k].equals("0.6")) sb.append("little sure");
+			if(tags[k].equals("0.8")) sb.append("sure");
+			if(tags[k].equals("1")) sb.append("very sure");
 			sb.append("\r\n");
 			bw.write(sb.toString());
 		}
 		bw.close();
 		
 		List<String[]> trainData = dp.trainDataWords;
-		bw = new BufferedWriter(new FileWriter(new File("data/trainSample.txt")));
+		bw = new BufferedWriter(new FileWriter(new File("data/trainSample_"+dim+".csv")));
 		sb = new StringBuilder();
 		for(int k=0;k<trainData.size();k++){
 			String[] sentence = trainData.get(k);
@@ -92,8 +100,10 @@ public class GenerateClassifyData {
 			vector.times(Double.valueOf(1)/Double.valueOf(count));
 			for(int i=0;i<vector.getColumnDimension();i++){
 				sb.append(vector.get(0, i));
-				sb.append(" ");
+				sb.append(",");
 			}
+			sb.delete(sb.length()-1, sb.length()-1);
+			sb.append("very not sure");
 			sb.append("\r\n");
 			bw.write(sb.toString());
 		}
