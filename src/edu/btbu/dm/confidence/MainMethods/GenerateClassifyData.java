@@ -28,7 +28,7 @@ public class GenerateClassifyData {
 		
 		HashMap<String,Integer> wordFlag = modelPresen.wordFlag;
 		System.out.println(wordFlag.size());
-		int dim = 30;
+		int dim = 20;
 		Matrix wordVectorMatrix = new Matrix(wordFlag.size(),dim);
 		File wordVectorFile = new File("data/words_out_"+dim+".txt");
 		BufferedReader br = null;
@@ -51,7 +51,7 @@ public class GenerateClassifyData {
 		
 		List<String[]> lableData = dp.lableDataWords;
 		String[] tags = dp.tags;
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("data/studySample_"+dim+".csv"),"GBK"));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("data/trainSample_"+dim+".csv"),"GBK"));
 		StringBuilder sb = new StringBuilder();
 		for(int k=0;k<lableData.size();k++){
 			String[] sentence = lableData.get(k);
@@ -71,6 +71,7 @@ public class GenerateClassifyData {
 				sb.append(",");
 			}
 			sb.delete(sb.length()-1, sb.length()-1);
+//			sb.append(tags[k]);
 			if(tags[k].equals("0")) sb.append("very not sure");
 			if(tags[k].equals("0.2")) sb.append("not sure");
 			if(tags[k].equals("0.4")) sb.append("little not sure");
@@ -83,7 +84,7 @@ public class GenerateClassifyData {
 		bw.close();
 		
 		List<String[]> trainData = dp.trainDataWords;
-		bw = new BufferedWriter(new FileWriter(new File("data/trainSample_"+dim+".csv")));
+		bw = new BufferedWriter(new FileWriter(new File("data/testSample_"+dim+".csv")));
 		sb = new StringBuilder();
 		for(int k=0;k<trainData.size();k++){
 			String[] sentence = trainData.get(k);
@@ -103,7 +104,7 @@ public class GenerateClassifyData {
 				sb.append(",");
 			}
 			sb.delete(sb.length()-1, sb.length()-1);
-			sb.append("very not sure");
+			sb.append("sure");
 			sb.append("\r\n");
 			bw.write(sb.toString());
 		}
